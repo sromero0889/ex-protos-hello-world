@@ -1,0 +1,23 @@
+name: Lint source code
+on: push
+
+jobs:
+  run:
+    name: Lint with clang-format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run:  sudo apt install clang-format
+
+      - name: Update source code
+        run: clang-format -i protos/*.proto --assume-filename=.proto --style=Google
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: GitHub Actions WF
+          message: 'Formatted Protos'
+          add: 'protos/*.proto'
